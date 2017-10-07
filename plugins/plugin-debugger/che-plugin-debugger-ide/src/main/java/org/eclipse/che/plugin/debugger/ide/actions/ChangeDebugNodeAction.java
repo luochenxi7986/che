@@ -10,8 +10,10 @@
  */
 package org.eclipse.che.plugin.debugger.ide.actions;
 
-import com.google.inject.Inject;
+import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
 
+import com.google.inject.Inject;
+import java.util.Collections;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
@@ -19,10 +21,6 @@ import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerView;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.UpdateValuePresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.UpdateExpressionPresenter;
-
-import java.util.Collections;
-
-import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
 
 /**
  * Action which allows change value of selected variable with debugger
