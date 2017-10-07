@@ -12,10 +12,10 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.common;
 
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.api.mvp.View;
-import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.UpdateValuePresenter;
 
 /**
- * The view of {@link ChangeValuePresenter}.
+ * The view of {@link UpdateValuePresenter}.
  *
  * @author <a href="mailto:aplotnikov@codenvy.com">Andrey Plotnikov</a>
  */

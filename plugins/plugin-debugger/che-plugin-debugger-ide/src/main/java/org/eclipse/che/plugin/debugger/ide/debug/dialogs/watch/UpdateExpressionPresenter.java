@@ -8,12 +8,12 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.edit;
+package org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.eclipse.che.api.debug.shared.model.Expression;
-import org.eclipse.che.api.debug.shared.model.impl.ExpressionImpl;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
+import org.eclipse.che.api.debug.shared.model.impl.WatchExpressionImpl;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.debug.Debugger;
 import org.eclipse.che.ide.debug.DebuggerManager;
@@ -29,7 +29,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
  * @author Alexander Andrienko
  */
 @Singleton
-public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDelegate {
+public class UpdateExpressionPresenter implements TextAreaDialogView.ActionDelegate {
 
   private final TextAreaDialogView view;
   private final DebuggerPresenter debuggerPresenter;
@@ -38,16 +38,16 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
   private WatchExpressionNode selectedNode;
 
   @Inject
-  public EditWatchExpressionPresenter(
+  public UpdateExpressionPresenter(
       DebuggerDialogFactory dialogFactory,
       DebuggerLocalizationConstant constant,
       DebuggerPresenter debuggerPresenter,
       DebuggerManager debuggerManager) {
     this.view =
         dialogFactory.createTextAreaDialogView(
-            constant.editExpressionTextAreaDialogView(),
-            constant.editExpressionViewAddButtonTitle(),
-            constant.editExpressionViewCancelButtonTitle(),
+            constant.editWatchExpressionDialogTitle(),
+            constant.editWatchExpressionAgreeButtonTitle(),
+            constant.editWatchExpressionCancelButtonTitle(),
             "debugger-edit-expression");
     this.view.setDelegate(this);
     this.debuggerPresenter = debuggerPresenter;
@@ -60,7 +60,7 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
     Node selectedNode = debuggerPresenter.getSelectedDebugNode();
     if (selectedNode instanceof WatchExpressionNode) {
       this.selectedNode = (WatchExpressionNode) selectedNode;
-      view.setValueTitle(constant.editExpressionViewExpressionFieldTitle());
+      view.setValueTitle(constant.editWatchExpressionFieldLabel());
       view.setValue(this.selectedNode.getData().getExpression());
       view.focusInValueField();
       view.selectAllText();
@@ -77,8 +77,8 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
   @Override
   public void onAgreeClicked() {
     if (selectedNode != null) {
-      Expression expression = new ExpressionImpl(view.getValue(), "");
-      selectedNode.setData(expression);
+      WatchExpression watchExpression = new WatchExpressionImpl(view.getValue(), "");
+      selectedNode.setData(watchExpression);
 
       debuggerPresenter.updateWatchExpressionNode(selectedNode);
 

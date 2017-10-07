@@ -39,7 +39,7 @@ import org.mockito.Mock;
  *
  * @author Artem Zatsarynnyi
  */
-public class EvaluateExpressionTest extends BaseTest {
+public class EvaluateWatchExpressionTest extends BaseTest {
   private static final String EXPRESSION = "expression";
   private static final String EMPTY_EXPRESSION = "";
   private static final String FAIL_REASON = "reason";

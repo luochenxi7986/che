@@ -18,7 +18,7 @@ import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
-import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.add.AddWatchExpressionPresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.AddWatchExpressionPresenter;
 
 /** @author Alexander Andrienko */
 public class AddWatchExpressionAction extends AbstractPerspectiveAction {

@@ -21,14 +21,13 @@ public class MutableVariableImpl implements MutableVariable {
   private final String type;
   private final boolean isPrimitive;
   private final VariablePath variablePath;
-  private  String name;
+  private String name;
   private SimpleValue value;
 
   public MutableVariableImpl(
       String type, String name, SimpleValue value, VariablePath variablePath, boolean isPrimitive) {
 
     this.name = name;
-
     this.value = value;
     this.type = type;
     this.isPrimitive = isPrimitive;

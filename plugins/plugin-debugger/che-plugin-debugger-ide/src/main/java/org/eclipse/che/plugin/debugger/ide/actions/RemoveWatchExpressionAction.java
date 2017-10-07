@@ -16,22 +16,24 @@ import com.google.inject.Inject;
 import java.util.Collections;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
-import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.DebuggerView;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /** @author Alexander Andrienko */
 public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
 
   private final DebuggerPresenter debuggerPresenter;
+  private final DebuggerView debuggerView;
 
   @Inject
   public RemoveWatchExpressionAction(
       DebuggerLocalizationConstant locale,
       DebuggerResources resources,
-      DebuggerPresenter debuggerPresenter) {
+      DebuggerPresenter debuggerPresenter,
+      DebuggerView debuggerView) {
     super(
         Collections.singletonList(PROJECT_PERSPECTIVE_ID),
         locale.removeWatchExpression(),
@@ -39,20 +41,19 @@ public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
         null,
         resources.removeExpressionBtn());
     this.debuggerPresenter = debuggerPresenter;
+    this.debuggerView = debuggerView;
   }
 
   @Override
   public void actionPerformed(ActionEvent event) {
-    Node selectedNode = debuggerPresenter.getSelectedDebugNode();
-
+    debuggerView.removeWatchExpression();
     debuggerPresenter.removeWatchExpressionNode((WatchExpressionNode) selectedNode);
   }
 
   @Override
   public void updateInPerspective(ActionEvent event) {
-    Node selectedNode = debuggerPresenter.getSelectedDebugNode();
     event
         .getPresentation()
-        .setEnabled(selectedNode != null && selectedNode instanceof WatchExpressionNode);
+        .setEnabled(debuggerView.getSelectedTeeNode() instanceof WatchExpressionNode);
   }
 }

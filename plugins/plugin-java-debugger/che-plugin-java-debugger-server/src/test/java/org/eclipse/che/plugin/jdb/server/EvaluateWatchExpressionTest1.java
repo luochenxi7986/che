@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
  *
  * @author Anatolii Bazko
  */
-public class EvaluateExpressionTest1 {
+public class EvaluateWatchExpressionTest1 {
 
   private JavaDebugger debugger;
   private BlockingQueue<DebuggerEvent> debuggerEvents;

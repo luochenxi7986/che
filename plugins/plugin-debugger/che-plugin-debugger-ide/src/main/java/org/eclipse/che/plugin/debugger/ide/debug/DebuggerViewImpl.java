@@ -31,11 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
-import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.Resources;
 import org.eclipse.che.ide.api.data.tree.Node;
@@ -187,23 +187,26 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
-  public WatchExpressionNode createWatchExpressionNode(@NotNull Expression expression) {
-    WatchExpressionNode exprNode = nodeFactory.createExpressionNode(expression);
-    tree.getNodeStorage().add(exprNode);
-    return exprNode;
+  public void addWatchExpression(WatchExpression watchExpression) {
+    WatchExpressionNode node = nodeFactory.createExpressionNode(watchExpression);
+    tree.getNodeStorage().add(node);
   }
 
   @Override
-  public void removeWatchExpressionNode(WatchExpressionNode node) {
-    tree.getNodeStorage().remove(node);
-  }
-
-  @Override
-  public void updateWatchExpressionNode(WatchExpressionNode expressionNode) {
-    Node node = tree.getNodeStorage().findNode(expressionNode);
+  public void removeWatchExpression(WatchExpression watchExpression) {
+    Node node = tree.getNodeStorage().findNodeWithKey(watchExpression.getKey());
     if (node != null) {
-      tree.getNodeStorage().update(expressionNode);
-      tree.refresh(expressionNode);
+      tree.getNodeStorage().remove(node);
+    }
+  }
+
+  @Override
+  public void updateWatchExpression(WatchExpression watchExpression) {
+    Node node = tree.getNodeStorage().findNodeWithKey(watchExpression.getKey());
+    if (node instanceof WatchExpressionNode) {
+      ((WatchExpressionNode) node).setData(watchExpression);
+      tree.getNodeStorage().update(node);
+      tree.refresh(node);
     }
   }
 

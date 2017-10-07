@@ -21,6 +21,7 @@ import org.eclipse.che.api.promises.client.PromiseProvider;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
 
+/** @author Alexander Andrienko */
 public class VariableNode extends AbstractDebuggerNode<Variable> {
 
   private Variable data;

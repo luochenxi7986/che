@@ -10,13 +10,16 @@
  */
 package org.eclipse.che.api.debug.shared.model;
 
-public interface Expression {
+/** @author Alexander Andrienko */
+public interface WatchExpression {
 
-    String getExpression();
+  String getKey();
 
-    void setExpression(String expression);
+  String getExpression();
 
-    String getResult();
+  void setExpression(String expression);
 
-    void setResult(String result);
+  String getResult();
+
+  void setResult(String result);
 }

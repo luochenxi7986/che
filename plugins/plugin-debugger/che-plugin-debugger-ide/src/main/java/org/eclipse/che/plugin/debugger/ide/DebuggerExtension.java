@@ -64,7 +64,7 @@ public class DebuggerExtension {
   public static final String RESUME_EXECUTION_ID = "resumeExecution";
   public static final String SUSPEND_EXECUTION_ID = "suspendExecution";
   public static final String EVALUATE_EXPRESSION_ID = "evaluateExpression";
-  public static final String CHANGE_VARIABLE_VALUE_ID = "changeDebugNode";
+  public static final String CHANGE_VARIABLE_VALUE_ID = "changeVariableValue";
   public static final String SHOW_HIDE_DEBUGGER_PANEL_ID = "showHideDebuggerPanel";
 
   @Inject

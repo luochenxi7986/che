@@ -26,18 +26,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
-import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.MutableVariable;
 import org.eclipse.che.api.debug.shared.model.SimpleValue;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
-import org.eclipse.che.api.debug.shared.model.impl.ExpressionImpl;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.commons.annotation.Nullable;
-import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
 import org.eclipse.che.ide.api.debug.BreakpointManagerObserver;
 import org.eclipse.che.ide.api.notification.NotificationManager;
@@ -56,7 +53,6 @@ import org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
 /**
@@ -86,7 +82,6 @@ public class DebuggerPresenter extends BasePresenter
   private final DebuggerResourceHandlerFactory resourceHandlerManager;
 
   private List<Variable> variables;
-  private List<WatchExpressionNode> exprNodes;
   private List<? extends ThreadState> threadDump;
   private Location executionPoint;
   private DebuggerDescriptor debuggerDescriptor;
@@ -120,8 +115,6 @@ public class DebuggerPresenter extends BasePresenter
 
     this.debuggerManager.addObserver(this);
     this.breakpointManager.addObserver(this);
-
-    this.exprNodes = new ArrayList<>();
 
     resetView();
     addDebuggerPanel();
@@ -274,7 +267,6 @@ public class DebuggerPresenter extends BasePresenter
                   variables.addAll(stackFrameDump.getFields());
                   variables.addAll(stackFrameDump.getVariables());
                   view.setVariables(variables);
-                  setWatchExpressions(threadId, frameIndex);
                 }
               })
           .catchError(
@@ -282,56 +274,6 @@ public class DebuggerPresenter extends BasePresenter
                 Log.error(DebuggerPresenter.class, error.getCause());
               });
     }
-  }
-
-  private void setWatchExpressions(long threadId, int frameIndex) {
-    for (WatchExpressionNode exprNode : exprNodes) {
-      Expression expression = exprNode.getData();
-      expression.setResult("");
-      WatchExpressionNode newNode = view.createWatchExpressionNode(expression);
-      calculateWatchExpression(newNode, threadId, frameIndex);
-    }
-  }
-
-  //todo comparator!!!
-  public WatchExpressionNode addWatchExpressionNode(Expression expression) {
-    WatchExpressionNode watchExpressionNode = view.createWatchExpressionNode(expression);
-    exprNodes.add(watchExpressionNode);
-
-    return watchExpressionNode;
-  }
-
-  public void removeWatchExpressionNode(WatchExpressionNode node) {
-    view.removeWatchExpressionNode(node);
-    exprNodes.remove(node);
-  }
-
-  public void updateWatchExpressionNode(WatchExpressionNode node) {
-    view.updateWatchExpressionNode(node);
-  }
-
-  public void calculateWatchExpression(
-      WatchExpressionNode watchExpressionNode, long threadId, int frameIndex) {
-    final String exprContent = watchExpressionNode.getData().getExpression();
-    debuggerManager
-        .getActiveDebugger()
-        .evaluate(exprContent, threadId, frameIndex)
-        .then(
-            result -> {
-              Expression expression = new ExpressionImpl(exprContent, result);
-              watchExpressionNode.setData(expression);
-              view.updateWatchExpressionNode(watchExpressionNode);
-            })
-        .catchError(
-            error -> {
-              Expression expression = new ExpressionImpl(exprContent, error.getMessage());
-              watchExpressionNode.setData(expression);
-              view.updateWatchExpressionNode(watchExpressionNode);
-            });
-  }
-
-  public Node getSelectedDebugNode() {
-    return view.getSelectedTeeNode();
   }
 
   public ToolbarPresenter getDebuggerToolbar() {

@@ -10,7 +10,8 @@
  */
 package org.eclipse.che.ide.processes.panel;
 
-import static org.eclipse.che.ide.processes.ProcessTreeNode.ProcessNodeType.MACHINE_NODE;
+import elemental.events.KeyboardEvent;
+import elemental.events.MouseEvent;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
@@ -27,12 +28,7 @@ import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import elemental.events.KeyboardEvent;
-import elemental.events.MouseEvent;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.CoreLocalizationConstant;
 import org.eclipse.che.ide.api.parts.PartStackUIResources;
@@ -52,6 +48,13 @@ import org.eclipse.che.ide.ui.tree.Tree;
 import org.eclipse.che.ide.ui.tree.TreeNodeElement;
 import org.eclipse.che.ide.util.input.SignalEvent;
 import org.vectomatic.dom.svg.ui.SVGResource;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.eclipse.che.ide.processes.ProcessTreeNode.ProcessNodeType.MACHINE_NODE;
 
 /**
  * Implementation of {@link ProcessesPanelView}.
@@ -107,7 +110,6 @@ public class ProcessesPanelViewImpl extends BaseView<ProcessesPanelView.ActionDe
     widget2Panels = new HashMap<>();
     processWidgets = new HashMap<>();
     widget2TreeNodes = new HashMap<>();
-
 
     renderer.addAddTerminalClickHandler(
         machineId -> delegate.onAddTerminal(machineId, TerminalOptionsJso.createDefault()));

@@ -22,7 +22,7 @@ import org.eclipse.che.api.debug.shared.model.MutableVariable;
 import org.eclipse.che.ide.debug.Debugger;
 import org.eclipse.che.ide.debug.DebuggerManager;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.UpdateValuePresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogView;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 /**
- * Testing {@link ChangeValuePresenter} functionality.
+ * Testing {@link UpdateValuePresenter} functionality.
  *
  * @author Artem Zatsarynnyi
  */
@@ -39,7 +39,7 @@ public class ChangeVariableValueTest extends BaseTest {
   private static final String VAR_NAME = "var_name";
   private static final String EMPTY_VALUE = "";
   @Mock private TextAreaDialogView view;
-  @InjectMocks private ChangeValuePresenter presenter;
+  @InjectMocks private UpdateValuePresenter presenter;
   @Mock private VariableDto var;
   @Mock private VariablePathDto varPath;
   @Mock private DebuggerManager debuggerManager;

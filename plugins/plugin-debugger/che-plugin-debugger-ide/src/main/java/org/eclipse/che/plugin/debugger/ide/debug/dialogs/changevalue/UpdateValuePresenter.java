@@ -30,7 +30,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
  * @author Artem Zatsarynnyi
  */
 @Singleton
-public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
+public class UpdateValuePresenter implements TextAreaDialogView.ActionDelegate {
   private final DebuggerManager debuggerManager;
   private final TextAreaDialogView view;
   private final DebuggerPresenter debuggerPresenter;
@@ -38,7 +38,7 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   private VariableNode selectedNode;
 
   @Inject
-  public ChangeValuePresenter(
+  public UpdateValuePresenter(
       DebuggerDialogFactory dialogFactory,
       DebuggerLocalizationConstant constant,
       DebuggerManager debuggerManager,

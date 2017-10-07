@@ -13,13 +13,17 @@ package org.eclipse.che.plugin.debugger.ide.debug;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import org.eclipse.che.api.debug.shared.model.*;
+import org.eclipse.che.api.debug.shared.model.Breakpoint;
+import org.eclipse.che.api.debug.shared.model.Location;
+import org.eclipse.che.api.debug.shared.model.StackFrameDump;
+import org.eclipse.che.api.debug.shared.model.ThreadState;
+import org.eclipse.che.api.debug.shared.model.Variable;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.mvp.View;
 import org.eclipse.che.ide.api.parts.base.BaseActionDelegate;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /**
  * Provides methods which allow change view representation of debugger panel. Also the interface
@@ -30,13 +34,6 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
  * @author Dmitry Shnurenko
  */
 public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
-
-  /**
-   * Remove watch expression from debugger tree.
-   *
-   * @param node watch expression node to delete
-   */
-  void removeWatchExpressionNode(WatchExpressionNode node);
 
   /** Needs for delegate some function into Debugger view. */
   interface ActionDelegate extends BaseActionDelegate {
@@ -82,9 +79,18 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
 
   void updateVariableNodeValue(VariableNode variable);
 
-  WatchExpressionNode createWatchExpressionNode(@NotNull Expression expression);
+  /** Adds a new watch expression in the tree. */
+  void addWatchExpression(WatchExpression watchExpression);
 
-  void updateWatchExpressionNode(WatchExpressionNode exprNode);
+  /** Updates the given expression in the tree. */
+  void updateWatchExpression(WatchExpression watchExpression);
+
+  /** Removes the given watch expression in the tree. */
+  void removeWatchExpression(WatchExpression watchExpression);
+
+  boolean isWatchExpressionSelected();
+
+  boolean isVariableSelected();
 
   /**
    * Sets breakpoints.
@@ -127,6 +133,7 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
    *
    * @return selected variable or null if no selection.
    */
+  @Nullable
   Node getSelectedTeeNode();
 
   /** Returns debugger toolbar panel widget. */

@@ -57,8 +57,8 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("suspend")
   String suspend();
 
-  @Key("changeDebugNode")
-  String changeDebugNode();
+  @Key("updateVariableValueAndWatchExpression")
+  String updateVariableValueAndWatchExpression();
 
   @Key("evaluateExpression")
   String evaluateExpression();
@@ -94,8 +94,8 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("deleteAllBreakpointsDescription")
   String deleteAllBreakpointsDescription();
 
-  @Key("changeDebugNodeDescription")
-  String changeDebugNodeDescription();
+  @Key("updateVariableValueAndWatchExpressionDescription")
+  String updateVariableValueAndWatchExpressionDescription();
 
   @Key("evaluateExpressionDescription")
   String evaluateExpressionDescription();
@@ -203,10 +203,10 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("debugger.frames.title")
   String debuggerFramesTitle();
 
-  @Key("add.watch.expression")
+  @Key("addWatchExpression")
   String addWatchExpression();
 
-  @Key("remove.watch.expression")
+  @Key("removeWatchExpression")
   String removeWatchExpression();
 
   @Key("addWatchExpressionDescription")
@@ -215,24 +215,24 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("removeWatchExpressionDescription")
   String removeWatchExpressionDescription();
 
-  @Key("add.expression.text.area.dialog.view")
-  String addExpressionTextAreaDialogView();
+  @Key("add.watch.expression.dialog.title")
+  String addWatchExpressionDialogTitle();
 
-  @Key("add.expression.view.add.button.title")
-  String addExpressionViewAddButtonTitle();
+  @Key("add.watch.expression.agree.button.title")
+  String addWatchExpressionAgreeButtonTitle();
 
-  @Key("add.expression.view.cancel.button.title")
-  String addExpressionViewCancelButtonTitle();
+  @Key("add.watch.expression.cancel.button.title")
+  String addWatchExpressionCancleButtonTitle();
 
-  @Key("edit.expression.text.area.dialog.view")
-  String editExpressionTextAreaDialogView();
+  @Key("edit.watch.expression.dialog.title")
+  String editWatchExpressionDialogTitle();
 
-  @Key("edit.expression.view.add.button.title")
-  String editExpressionViewAddButtonTitle();
+  @Key("edit.watch.expression.agree.button.title")
+  String editWatchExpressionAgreeButtonTitle();
 
-  @Key("edit.expression.view.cancel.button.title")
-  String editExpressionViewCancelButtonTitle();
+  @Key("edit.watch.expression.cancel.button.title")
+  String editWatchExpressionCancelButtonTitle();
 
-  @Key("edit.expression.view.expression.field.title")
-  String editExpressionViewExpressionFieldTitle();
+  @Key("edit.watch.expression.field.label")
+  String editWatchExpressionFieldLabel();
 }

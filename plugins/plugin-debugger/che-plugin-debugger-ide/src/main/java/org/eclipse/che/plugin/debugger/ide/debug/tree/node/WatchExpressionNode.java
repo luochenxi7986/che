@@ -15,51 +15,54 @@ import static java.util.Collections.emptyList;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import java.util.List;
-import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
+import org.eclipse.che.api.debug.shared.model.impl.WatchExpressionImpl;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseProvider;
 import org.eclipse.che.ide.api.data.tree.Node;
+import org.eclipse.che.ide.debug.DebuggerManager;
 import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 
-public class WatchExpressionNode extends AbstractDebuggerNode<Expression> {
+/** @author Alexander Andrienko */
+public class WatchExpressionNode extends AbstractDebuggerNode<WatchExpression> {
 
   private final PromiseProvider promiseProvider;
 
-  private Expression expression;
+  private WatchExpression watchExpression;
   private DebuggerResources debuggerResources;
+  private DebuggerManager debuggerManager;
 
   @Inject
   public WatchExpressionNode(
-      @Assisted Expression expression,
+      @Assisted WatchExpression watchExpression,
       PromiseProvider promiseProvider,
-      DebuggerResources debuggerResources) {
+      DebuggerResources debuggerResources,
+      DebuggerManager debuggerManager) {
     this.promiseProvider = promiseProvider;
-    this.expression = expression;
+    this.watchExpression = watchExpression;
     this.debuggerResources = debuggerResources;
+    this.debuggerManager = debuggerManager;
   }
 
   @Override
   protected Promise<List<Node>> getChildrenImpl() {
-    // Todo: current server side returns result of evaluation expression like simple string line,
-    // so we have not ability to get and render children.
     return promiseProvider.resolve(emptyList());
   }
 
   @Override
   public String getName() {
-    return expression.getExpression();
+    return watchExpression.getExpression();
   }
 
   @Override
   public boolean isLeaf() {
-    // Todo: for current implementation it's an always leaf.
     return true;
   }
 
   @Override
   public void updatePresentation(NodePresentation presentation) {
-    String content = expression.getExpression() + "=" + expression.getResult();
+    String content = watchExpression.getExpression() + "=" + watchExpression.getResult();
     presentation.setPresentableText(content);
     presentation.setPresentableIcon(debuggerResources.watchExpressionIcon());
   }
@@ -71,12 +74,33 @@ public class WatchExpressionNode extends AbstractDebuggerNode<Expression> {
   }
 
   @Override
-  public Expression getData() {
-    return expression;
+  public WatchExpression getData() {
+    return watchExpression;
+  }
+
+  public void calculateWatchExpression(
+      WatchExpressionNode watchExpressionNode, long threadId, int frameIndex) {
+    final String exprContent = watchExpressionNode.getData().getExpression();
+    debuggerManager
+        .getActiveDebugger()
+        .evaluate(exprContent, threadId, frameIndex)
+        .then(
+            result -> {
+              WatchExpression watchExpression = new WatchExpressionImpl(exprContent, result);
+              watchExpressionNode.setData(watchExpression);
+              view.updateWatchExpression(watchExpressionNode);
+            })
+        .catchError(
+            error -> {
+              WatchExpression watchExpression =
+                  new WatchExpressionImpl(exprContent, error.getMessage());
+              watchExpressionNode.setData(watchExpression);
+              view.updateWatchExpression(watchExpressionNode);
+            });
   }
 
   @Override
-  public void setData(Expression expression) {
-    this.expression = expression;
+  public void setData(WatchExpression watchExpression) {
+    this.watchExpression = watchExpression;
   }
 }

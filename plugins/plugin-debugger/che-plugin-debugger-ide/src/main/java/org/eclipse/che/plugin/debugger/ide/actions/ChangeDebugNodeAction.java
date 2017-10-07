@@ -10,20 +10,19 @@
  */
 package org.eclipse.che.plugin.debugger.ide.actions;
 
-import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
-
 import com.google.inject.Inject;
-import java.util.Collections;
+
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
-import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
-import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.edit.EditWatchExpressionPresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
+import org.eclipse.che.plugin.debugger.ide.debug.DebuggerView;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.UpdateValuePresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.UpdateExpressionPresenter;
+
+import java.util.Collections;
+
+import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
 
 /**
  * Action which allows change value of selected variable with debugger
@@ -32,43 +31,41 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
  */
 public class ChangeDebugNodeAction extends AbstractPerspectiveAction {
 
-  private final ChangeValuePresenter changeValuePresenter;
-  private final DebuggerPresenter debuggerPresenter;
-  private final EditWatchExpressionPresenter editWatchExpressionPresenter;
-
-  private Node selectedNode;
+  private final UpdateValuePresenter updateValuePresenter;
+  private final UpdateExpressionPresenter updateExpressionPresenter;
+  private final DebuggerView debuggerView;
 
   @Inject
   public ChangeDebugNodeAction(
       DebuggerLocalizationConstant locale,
       DebuggerResources resources,
-      ChangeValuePresenter changeValuePresenter,
-      EditWatchExpressionPresenter editWatchExpressionPresenter,
-      DebuggerPresenter debuggerPresenter) {
+      UpdateValuePresenter updateValuePresenter,
+      UpdateExpressionPresenter updateExpressionPresenter,
+      DebuggerView debuggerView) {
     super(
         Collections.singletonList(PROJECT_PERSPECTIVE_ID),
-        locale.changeDebugNode(),
-        locale.changeDebugNodeDescription(),
+        locale.updateVariableValueAndWatchExpression(),
+        locale.updateVariableValueAndWatchExpressionDescription(),
         null,
         resources.changeDebugNode());
-    this.changeValuePresenter = changeValuePresenter;
-    this.debuggerPresenter = debuggerPresenter;
-    this.editWatchExpressionPresenter = editWatchExpressionPresenter;
+    this.updateValuePresenter = updateValuePresenter;
+    this.updateExpressionPresenter = updateExpressionPresenter;
+    this.debuggerView = debuggerView;
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (selectedNode instanceof VariableNode) {
-      changeValuePresenter.showDialog();
-    }
-    if (selectedNode instanceof WatchExpressionNode) {
-      editWatchExpressionPresenter.showDialog();
+    if (debuggerView.isWatchExpressionSelected()) {
+      updateExpressionPresenter.showDialog();
+    } else if (debuggerView.isVariableSelected()) {
+      updateValuePresenter.showDialog();
     }
   }
 
   @Override
   public void updateInPerspective(ActionEvent event) {
-    event.getPresentation().setEnabled(debuggerPresenter.getSelectedDebugNode() != null);
-    selectedNode = debuggerPresenter.getSelectedDebugNode();
+    event
+        .getPresentation()
+        .setEnabled(debuggerView.isVariableSelected() || debuggerView.isWatchExpressionSelected());
   }
 }
