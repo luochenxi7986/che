@@ -10,11 +10,9 @@
  */
 package org.eclipse.che.workspace.infrastructure.openshift;
 
-import com.google.inject.assistedinject.Assisted;
-import org.eclipse.che.workspace.infrastructure.openshift.project.OpenShiftProject;
+import org.eclipse.che.workspace.infrastructure.openshift.project.OpenShiftNamespace;
 
 /** @author Sergii Leshchenko */
 public interface OpenShiftRuntimeFactory {
-  OpenShiftInternalRuntime create(
-      @Assisted OpenShiftRuntimeContext context, @Assisted OpenShiftProject openShiftProject);
+  OpenShiftInternalRuntime create(OpenShiftRuntimeContext context, OpenShiftNamespace namespace);
 }
